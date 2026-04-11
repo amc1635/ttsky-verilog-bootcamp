@@ -22,6 +22,6 @@ module tt_um_halfadder (
     assign uo_out[0] = ui_in[0] ^ ui_in[1];
     assign uo_out[1] = ui_in[0] & ui_in[1];
     assign uo_out[7:2] = 6'b0;
-  // wire _unused = &{ena, clk, rst_n, 1'b0};
+  wire _unused = &{ena, clk, rst_n, 1'b0};
 
 endmodule
