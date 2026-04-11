@@ -25,7 +25,7 @@ input [7:0]instr,
 output reg [2:0]alu_op,
 output reg acc_load,mem_write,
 output [7:0]operand_out);
-wire [3:0]opcode;
+  wire [2:0]opcode;
 assign opcode  = instr[7:5];
 assign operand_out = {3'b000,instr[4:0]};
 parameter[2:0]LOAD = 3'b110, STORE= 3'b111;
