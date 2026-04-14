@@ -8,7 +8,7 @@
 module data_memory(
     input         clk,
     input         Write_en,
-    input   [7:0] Addr,
+    input   [2:0] Addr,
     input   [7:0] Data_in,
     output  [7:0] Data_out
 );
@@ -17,14 +17,14 @@ module data_memory(
     // SHRINK RAM TO FIT IN SILICON
     // 8 mailboxes (0 to 7), each holding an 8-bit number.
     // -------------------------------------------------------------------------
-    reg [9:0] ram [0:11]; 
+    reg [15:0] ram [0:7]; 
 
     always @(posedge clk) begin
         if (Write_en) begin
-            ram[Addr[2:0]] <= Data_in; // Sliced to 3 bits
+            ram[Addr] <= Data_in; // Sliced to 3 bits
         end
     end
 
-    assign Data_out = ram[Addr[2:0]];  // Sliced to 3 bits
+    assign Data_out = ram[Addr];  // Sliced to 3 bits
 
 endmodule
