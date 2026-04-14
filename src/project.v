@@ -23,7 +23,7 @@ module tt_um_processor_top (
 
     // Internal wires connecting Stage 1 to Stage 2
     wire [7:0] pipeline_instr_wire;
-    // wire [7:0] pc_monitor_wire;
+    wire [7:0] pc_monitor_wire;
     wire [7:0] final_acc_value;
 
     // -------------------------------------------------------------------------
@@ -47,7 +47,7 @@ top_processor Stage1_Fetch (
         .clk(clk),
         .reset(reset),
         .instr_in(ui_in),               // <-- INJECT ui_in HERE
-        .PC_out(),
+        .PC_out(pc_monitor_wire),
         .instr_out(pipeline_instr_wire)
     );
 
@@ -65,6 +65,6 @@ top_processor Stage1_Fetch (
     // PREVENT WARNINGS FOR UNUSED INPUTS
     // -------------------------------------------------------------------------
     // Since we aren't multiplexing anymore, all ui_in pins are unused.
-    wire _unused = &{ena, uio_in, 1'b0};
+    wire _unused = &{ena, uio_in, 1'b0, pc_monitor_wire};
 
 endmodule
