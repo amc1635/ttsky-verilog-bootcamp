@@ -29,7 +29,7 @@ instr_out<=instr_in;
 end
 endmodule
 
-module instruction_register (
+module instruction_register(
     input   clk,
     input   reset,
     input  [7:0] Instruction,   
@@ -43,7 +43,7 @@ always @(posedge clk ) begin
 endmodule
 
 
-module instruction_memory (
+module instruction_memory(
     input  wire [7:0] PC_Address,   // Comes from Member 1's PC_out
     output wire [7:0] Instruction   // Goes into Member 1's instr_in
 );
