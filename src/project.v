@@ -43,12 +43,12 @@ module tt_um_processor_top (
     // -------------------------------------------------------------------------
     // STAGE 1: Fetch and Pipeline (Member 1's Wrapper)
     // -------------------------------------------------------------------------
-    top_processor Stage1_Fetch (
+top_processor Stage1_Fetch (
         .clk(clk),
         .reset(reset),
-        .instr_in(8'b00000000),         // Unused in current design, tied to 0
+        .instr_in(ui_in),               // <-- INJECT ui_in HERE
         .PC_out(pc_monitor_wire),
-        .instr_out(pipeline_instr_wire) // The instruction passed across the pipeline
+        .instr_out(pipeline_instr_wire)
     );
 
     // -------------------------------------------------------------------------
@@ -65,6 +65,6 @@ module tt_um_processor_top (
     // PREVENT WARNINGS FOR UNUSED INPUTS
     // -------------------------------------------------------------------------
     // Since we aren't multiplexing anymore, all ui_in pins are unused.
-    wire _unused = &{ena, ui_in, uio_in, 1'b0};
+    wire _unused = &{ena, uio_in, 1'b0};
 
 endmodule
