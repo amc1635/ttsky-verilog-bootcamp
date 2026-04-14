@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2024 Your Name
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+`default_nettype none
 module instruction_memory (
 input wire [7:0] PC_Address,
 output wire [7:0] Instruction
