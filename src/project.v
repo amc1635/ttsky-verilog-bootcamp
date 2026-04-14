@@ -47,7 +47,7 @@ top_processor Stage1_Fetch (
         .clk(clk),
         .reset(reset),
         .instr_in(ui_in),               // <-- INJECT ui_in HERE
-        .PC_out(pc_monitor_wire),
+        .PC_out(),
         .instr_out(pipeline_instr_wire)
     );
 
