@@ -9,12 +9,12 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Half Adder
+ALU for 8 bts
 
 ## How to test
 
-Give different input and verify
+using testbench
 
 ## External hardware
 
-No ext hardware
+No external hardware used in your project
