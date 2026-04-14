@@ -69,8 +69,6 @@ module top_processor(
     output wire [7:0] PC_out,
     output wire [7:0] instr_out
 );
-
-    wire [7:0] Instruction;
     wire [7:0] ir_instr_out;
 
     fetch_stage u_fetch (
@@ -79,15 +77,13 @@ module top_processor(
         .PC_out (PC_out)
     );
 
-    instruction_memory u_imem (
-        .PC_Address  (PC_out),
-        .Instruction (Instruction)
-    );
+    // DELETED the instruction_memory (ROM) instance entirely.
+    // The processor now takes instructions directly from the outside world.
 
     instruction_register u_ir (
         .clk         (clk),
         .reset       (reset),
-        .Instruction (Instruction),
+        .Instruction (instr_in),       // <-- Route the external input directly here
         .instr_out   (ir_instr_out)
     );
 
@@ -97,6 +93,4 @@ module top_processor(
         .instr_in  (ir_instr_out),
         .instr_out (instr_out)
     );
-
 endmodule
-
