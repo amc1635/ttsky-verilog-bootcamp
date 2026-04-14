@@ -6,7 +6,8 @@
 `default_nettype none
 
 module ALU_8(
-input [7:0]A, [7:0]B,
+input [7:0]A,
+input [7:0]B,
 input [2:0]alu_op,
 output reg[7:0]result
 
