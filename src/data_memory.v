@@ -17,7 +17,7 @@ module data_memory(
     // SHRINK RAM TO FIT IN SILICON
     // 8 mailboxes (0 to 7), each holding an 8-bit number.
     // -------------------------------------------------------------------------
-    reg [7:0] ram [0:7]; 
+    reg [9:0] ram [0:11]; 
 
     always @(posedge clk) begin
         if (Write_en) begin
