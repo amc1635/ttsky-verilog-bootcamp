@@ -23,7 +23,7 @@ module tt_um_processor_top (
 
     // Internal wires connecting Stage 1 to Stage 2
     wire [7:0] pipeline_instr_wire;
-    wire [7:0] pc_monitor_wire;
+    // wire [7:0] pc_monitor_wire;
     wire [7:0] final_acc_value;
 
     // -------------------------------------------------------------------------
