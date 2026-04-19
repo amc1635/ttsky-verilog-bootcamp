@@ -50,31 +50,34 @@ always @(posedge clk ) begin
 endmodule
 
 
-`default_nettype none
 
 module instr_mem (
     input wire clk,
     input wire rst,
-
-    // from SIPO
     input wire [11:0] instr_in,
     input wire done,              
-
-    // read side
     input wire [2:0] rd_addr,
     input wire re,
-
-    output wire [11:0] instr_out, // <-- Must be a 'wire' for combinational logic
+    output wire [11:0] instr_out, 
     output reg [2:0] wr_addr
 );
 
     reg [11:0] mem [0:7];
     reg done_d;   
+    
+    // Declare iterator for the initialization loop
+    integer i; 
 
     always @(posedge clk) begin
         if (rst) begin
             wr_addr <= 3'b000;
             done_d  <= 1'b0;
+            
+            // NEW: Instantly clear all memory slots to zero to avoid XXX states!
+            for (i = 0; i < 8; i = i + 1) begin
+                mem[i] <= 12'b0000_00000000;
+            end
+            
         end else begin
             done_d <= done;
 
@@ -89,7 +92,7 @@ module instr_mem (
         end
     end
 
-    // The Combinational Read Fix! Instantly outputs data when 're' is high.
+    // The Combinational Read
     assign instr_out = (re) ? mem[rd_addr] : 12'b0000_00000000;
 
 endmodule
