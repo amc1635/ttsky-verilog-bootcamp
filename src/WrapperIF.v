@@ -105,36 +105,75 @@ end
 
 endmodule
 
-
 module top_processor(
-    input  wire clk,
-    input  wire reset,
-    input  wire [7:0] instr_in,
-    output wire [7:0] PC_out,
-    output wire [7:0] instr_out
+    input clk,
+    input rst,mod,
+    input in0, in1, in2,
+    input re,
+    output reg[11:0] instr_out
 );
-    wire [7:0] ir_instr_out;
 
-    fetch_stage u_fetch (
-        .clk    (clk),
-        .reset  (reset),
-        .PC_out (PC_out)
-    );
+wire [11:0] sipo_out;
+wire done;
 
-    // DELETED the instruction_memory (ROM) instance entirely.
-    // The processor now takes instructions directly from the outside world.
+wire [11:0] mem_out;
+wire [2:0] rd_addr;
+wire [2:0] wr_addr;
+wire [11:0] pipe_out;
+wire [11:0] ir_out;
 
-    instruction_register u_ir (
-        .clk         (clk),
-        .reset       (reset),
-        .Instruction (instr_in),       // <-- Route the external input directly here
-        .instr_out   (ir_instr_out)
-    );
+// ---------------- SIPO ----------------
+sipo u_sipo (
+    .clk(clk),
+    .rst(rst),
+    .in0(in0),
+    .in1(in1),
+    .in2(in2),
+    .mod(mod),
+    .out(sipo_out),
+    .done(done)
+);
 
-    pipeline_register u_pipeline (
-        .clk       (clk),
-        .reset     (reset),
-        .instr_in  (ir_instr_out),
-        .instr_out (instr_out)
-    );
+// ----------- Instruction Memory --------
+instruction_memory u_mem (
+    .clk(clk),
+    .rst(rst),
+    .instr_in(sipo_out),
+    .done(done),
+    .rd_addr(rd_addr),
+    .re(re),
+    .instr_out(mem_out),
+    .wr_addr(wr_addr)
+);
+
+// ---------------- PC ----------------
+pc u_pc (
+    .reset(rst),
+    .clk(clk),
+    .re(re),
+    .rd_addr(rd_addr)
+);
+
+// -------- Pipeline Register ----------
+// 1. Memory feeds the Instruction Register (IR)
+instruction_register u_ir (
+    .clk(clk),
+    .reset(rst),
+    .Instruction(mem_out),      // Changed from pipe_out to mem_out
+    .instr_out(ir_out)          // ir_out is now the "middle" signal
+);
+
+// 2. IR feeds the Pipeline Register
+pipeline_register u_pipe (
+    .clk(clk),
+    .reset(rst),
+    .instr_in(ir_out),          // Changed from mem_out to ir_out
+    .instr_out(pipe_out)        // pipe_out is now the final output
+);
+
+// 3. Connect the final Pipeline Register to the top-level output
+always @(*) begin
+    instr_out = pipe_out;
+end
 endmodule
+
