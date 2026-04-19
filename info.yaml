@@ -1,9 +1,9 @@
 # Tiny Tapeout project information
 project:
-  title:        "ALUt1"      # Project title
-  author:       "Amal Manoj C"      # Your name
+  title:        "TinyCrypto-8"      # Project title
+  author:       "Team Apex"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  "ALU"      # One line description of what your project does
+  description:  "An 8-Bit Pipelined ALU with Hardware Cryptography"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     50000000       # Clock frequency in Hz (or 0 if not applicable)
 
@@ -24,6 +24,7 @@ project:
     - "WrapperEx.v"
     - "WrapperIF.v"
     - "data_memory.v"
+    - "SIPO.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
@@ -35,8 +36,8 @@ pinout:
   ui[3]: "input4"
   ui[4]: "input5"
   ui[5]: "input6"
-  ui[6]: "input9"
-  ui[7]: "input8"
+  ui[6]: ""
+  ui[7]: ""
 
   # Outputs
   uo[0]: "output0"
