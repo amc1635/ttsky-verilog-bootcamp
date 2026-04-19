@@ -2,6 +2,29 @@
 ## How it works
 
 The design implements a **TinyCrypto-8: An 8-Bit Pipelined ALU with Hardware Cryptography**.It optimizes instruction throughput by overlapping the fetch and execution phases
+## Inputs
+| Pin  | Name        | Logic Level              | Description |
+|------|------------|--------------------------|-------------|
+| ui[0] | MOD        | 0 = Program, 1 = Execute | Switches between SIPO programming mode and CPU execution mode. |
+| ui[1] | RE         | High = Run               | Read Enable: Acts as the "Run" button for the Program Counter (PC). |
+| ui[2] | SIPO_IN0   | Serial Bit               | Serial input for bits 3–0 (Low nibble) of the instruction. |
+| ui[3] | SIPO_IN1   | Serial Bit               | Serial input for bits 7–4 (Mid nibble) of the instruction. |
+| ui[4] | SIPO_IN2   | Serial Bit               | Serial input for bits 11–8 (High nibble) of the instruction. |
+| ui[5] | DATA_VALID | Pulse                    | Handshake clock used to shift bits into the SIPO register. |
+| ui[6] | NC         | -                        | Not Connected / Reserved. |
+| ui[7] | NC         | -                        | Not Connected / Reserved. |
+
+## Outputs
+| Pin  | Name      | Description |
+|------|----------|-------------|
+| uo[0] | ACC_Bit0 | Accumulator Bit 0 (Least Significant Bit) |
+| uo[1] | ACC_Bit1 | Accumulator Bit 1 |
+| uo[2] | ACC_Bit2 | Accumulator Bit 2 |
+| uo[3] | ACC_Bit3 | Accumulator Bit 3 |
+| uo[4] | ACC_Bit4 | Accumulator Bit 4 |
+| uo[5] | ACC_Bit5 | Accumulator Bit 5 |
+| uo[6] | ACC_Bit6 | Accumulator Bit 6 |
+| uo[7] | ACC_Bit7 | Accumulator Bit 7 (Most Significant Bit) |
 
 ### Stage 1: Instruction Fetch (IF)
 * **SIPO Interface**: Instructions are received serially through a 3-lane input and converted into a **12-bit parallel instruction** using a Serial-In Parallel-Out (SIPO) register.
@@ -73,4 +96,11 @@ For optional hardware testing, the following setups may be used:
 
 Basic Verification:
 A microcontroller (e.g., Arduino Uno, Raspberry Pi Pico, or ESP32) can drive ui_in with test patterns and read uo_out for validation.
- 
+## Applications
+* Lightweight Security: The integrated LFSR Crypto Engine allows for hardware-level stream encryption in IoT devices.
+
+* Embedded Control: Efficiently handles logic for low-power systems like traffic light controllers or smart home actuators.
+
+* Prototyping: The 3-lane SIPO interface enables real-time instruction injection via external microcontrollers like Arduino.
+
+* Basic DSP: Performs bit manipulation and fixed-point arithmetic for sensor data processing using shift and logic operations.
