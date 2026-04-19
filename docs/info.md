@@ -48,8 +48,6 @@ The design is verified using a comprehensive **testbench** (`tb_Processor_Top`)
 * **Crypto Testing**: The `LOAD_SEED` operation initializes the LFSR, followed by `CRYPTO` operations to verify encrypted data output.
 
 
-## ISA Overview
-
 | Category        | Opcode (4-bit) | Mnemonic | Operation | Description |
 |-----------------|----------------|----------|-----------|-------------|
 | Arithmetic      | 4'b0000        | ADD      | A + B     | Adds Accumulator and Operand |
@@ -66,5 +64,8 @@ The design is verified using a comprehensive **testbench** (`tb_Processor_Top`)
 |                 | 4'b1001        | SHR      | A >> 1    | Shift right, LSB → Carry |
 | Cryptography    | 4'b1100        | LOAD_SEED| LFSR = B  | Loads initial seed into LFSR |
 |                 | 4'b1101        | CRYPTO   | A ⊕ LFSR  | XOR of ACC with LFSR stream |
+
+## External Hardware Required
+
 
  
