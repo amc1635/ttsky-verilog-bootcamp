@@ -1,7 +1,8 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg)
 # 8-Bit Cryptographic Pipelined Processor
 - [Read the documentation for project](docs/info.md)
-This repository contains the Verilog RTL for a custom 8-bit, two-stage pipelined processor designed for submission to [Tiny Tapeout](https://tinytapeout.com/). 
+
+- This repository contains the Verilog RTL for a custom 8-bit, two-stage pipelined processor designed for submission to [Tiny Tapeout](https://tinytapeout.com/). 
 
 The processor features a custom 16-instruction ISA, an integrated Arithmetic Logic Unit (ALU), a scratchpad memory system, and a unique hardware-level **LFSR Cryptography Engine** for data encryption and decryption.
 
