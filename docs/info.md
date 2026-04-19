@@ -1,6 +1,4 @@
 
----
-
 ## How it works
 
 The design implements a **2-stage pipelined 8-bit processor**.It optimizes instruction throughput by overlapping the fetch and execution phases
