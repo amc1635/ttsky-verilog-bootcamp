@@ -55,11 +55,19 @@ module tt_um_processor_top (
 // -------------------------------------------------------------------------
     // STAGE 2: Execute and Memory 
     // -------------------------------------------------------------------------
+    // Create dummy wires to absorb the unused flag outputs
+    wire dummy_Z, dummy_N, dummy_C;
+
     ex_stage_top Stage2_Execute (
         .clk(clk),
         .rst(rst),
-        .instr_in(pipeline_highway), // 12-bit input from the pipeline
-        .out_pins(final_acc_value)   // 8-bit output from the Accumulator
+        .instr_in(pipeline_highway), 
+        .out_pins(final_acc_value),  
+        
+        // Connect the dummy wires to satisfy Verilator!
+        .status_Z(dummy_Z),
+        .status_N(dummy_N),
+        .status_C(dummy_C)
     );
 
     // -------------------------------------------------------------------------
