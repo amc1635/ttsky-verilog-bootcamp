@@ -87,8 +87,9 @@ module tt_um_processor_top (
     // -------------------------------------------------------------------------
     // PREVENT WARNINGS FOR UNUSED INPUTS
     // -------------------------------------------------------------------------
-    // Safely sink ui_in[7] and ui_in[6], plus the unused TT system pins,
-    // so OpenLane doesn't throw synthesis warnings about floating wires.
-    wire _unused = &{ena, uio_in, ui_in[7:6], 1'b0};
+    // -------------------------------------------------------------------------
+    // PREVENT WARNINGS FOR UNUSED INPUTS/OUTPUTS
+    // -------------------------------------------------------------------------
+    wire _unused = &{ena, uio_in, ui_in[7:6], dummy_Z, dummy_N, dummy_C, 1'b0};
 
 endmodule
