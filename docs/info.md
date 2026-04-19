@@ -47,7 +47,7 @@ The design is verified using a comprehensive **testbench** (`tb_Processor_Top`)
 * **ALU Verification**: Test cases verify arithmetic accuracy and that flags ($Z, N, C$) update correctly.
 * **Crypto Testing**: The `LOAD_SEED` operation initializes the LFSR, followed by `CRYPTO` operations to verify encrypted data output.
 
-* ## ISA Overview
+
 ## ISA Overview
 
 | Category        | Opcode (4-bit) | Mnemonic | Operation | Description |
