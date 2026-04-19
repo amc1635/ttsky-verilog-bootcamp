@@ -57,7 +57,7 @@ always @(posedge clk ) begin
 endmodule
 
 
-module instruction_memory (
+module instr_mem (
     input clk,
     input rst,
 
@@ -105,7 +105,8 @@ end
 
 endmodule
 
-module top_processor(
+
+module top_cpu(
     input clk,
     input rst,mod,
     input in0, in1, in2,
@@ -135,7 +136,7 @@ sipo u_sipo (
 );
 
 // ----------- Instruction Memory --------
-instruction_memory u_mem (
+instr_mem u_mem (
     .clk(clk),
     .rst(rst),
     .instr_in(sipo_out),
