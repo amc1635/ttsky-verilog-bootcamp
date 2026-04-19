@@ -69,7 +69,7 @@ The design is verified using a comprehensive **testbench** (`tb_Processor_Top`)
 
 This project does not require any external hardware.
 
-The DSP core operates entirely on digital signals (ui_in, uo_out) and is designed for simulation or integration into a larger digital system.
+The ALU operates entirely on digital signals (ui_in, uo_out) and is designed for simulation or integration into a larger digital system.
 
 For optional hardware testing, the following setups may be used:
 
