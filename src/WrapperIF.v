@@ -60,61 +60,59 @@ always @(posedge clk ) begin
 endmodule
 
 
+`default_nettype none
+
 module instr_mem (
-    input clk,
-    input rst,
+    input wire clk,
+    input wire rst,
 
     // from SIPO
-    input [11:0] instr_in,
-    input done,              
+    input wire [11:0] instr_in,
+    input wire done,              
 
     // read side
-    input [2:0] rd_addr,
-    input re,
+    input wire [2:0] rd_addr,
+    input wire re,
 
-    output reg [11:0] instr_out,
+    output wire [11:0] instr_out, // <-- Must be a 'wire' for combinational logic
     output reg [2:0] wr_addr
 );
 
-reg [11:0] mem [0:7];
-reg done_d;   // for edge detection
+    reg [11:0] mem [0:7];
+    reg done_d;   
 
-always @(posedge clk) begin
-    if (rst) begin
-        wr_addr <= 0;
-        instr_out <= 0;
-        done_d <= 0;
-    end else begin
-        done_d <= done;
+    always @(posedge clk) begin
+        if (rst) begin
+            wr_addr <= 3'b000;
+            done_d  <= 1'b0;
+        end else begin
+            done_d <= done;
 
-        
-        if (done && !done_d) begin
-            if (wr_addr < 3'd7) begin
-                mem[wr_addr] <= instr_in;
-                wr_addr <= wr_addr + 1;
-            end else begin
-                mem[wr_addr] <= instr_in; // last location
-                wr_addr <= wr_addr;       // stop increment
+            if (done && !done_d) begin
+                if (wr_addr < 3'd7) begin
+                    mem[wr_addr] <= instr_in;
+                    wr_addr <= wr_addr + 1;
+                end else begin
+                    mem[wr_addr] <= instr_in; 
+                end
             end
         end
-
-        
-        if (re) begin
-            instr_out <= mem[rd_addr];
-        end
     end
-end
 
+    // The Combinational Read Fix! Instantly outputs data when 're' is high.
+    assign instr_out = (re) ? mem[rd_addr] : 12'b0000_00000000;
 
 endmodule
 
 
+
 module top_cpu(
     input clk,
-    input rst,mod,
+    input rst, mod,
     input in0, in1, in2,
+    input data_valid,    // <-- ADDED: Must expose the handshake pin!
     input re,
-    output reg[11:0] instr_out
+    output reg [11:0] instr_out
 );
 
 wire [11:0] sipo_out;
@@ -134,6 +132,7 @@ sipo u_sipo (
     .in1(in1),
     .in2(in2),
     .mod(mod),
+    .data_valid(data_valid), // <-- ADDED: Connect the wire to the SIPO!
     .out(sipo_out),
     .done(done)
 );
@@ -158,24 +157,21 @@ pc u_pc (
     .rd_addr(rd_addr)
 );
 
-// -------- Pipeline Register ----------
-// 1. Memory feeds the Instruction Register (IR)
+// -------- Pipeline Registers ----------
 instruction_register u_ir (
     .clk(clk),
     .reset(rst),
-    .Instruction(mem_out),      // Changed from pipe_out to mem_out
-    .instr_out(ir_out)          // ir_out is now the "middle" signal
+    .Instruction(mem_out),      
+    .instr_out(ir_out)          
 );
 
-// 2. IR feeds the Pipeline Register
 pipeline_register u_pipe (
     .clk(clk),
     .reset(rst),
-    .instr_in(ir_out),          // Changed from mem_out to ir_out
-    .instr_out(pipe_out)        // pipe_out is now the final output
+    .instr_in(ir_out),          
+    .instr_out(pipe_out)        
 );
 
-// 3. Connect the final Pipeline Register to the top-level output
 always @(*) begin
     instr_out = pipe_out;
 end
