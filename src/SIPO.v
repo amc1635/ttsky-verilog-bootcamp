@@ -23,7 +23,7 @@ module sipo(
     wire dv_edge = (dv_sync1 & ~dv_sync2); 
 
     // --- The SIPO Logic ---
-    reg [3:0] s0, s1, s2;
+    reg [2:0] s0, s1, s2; // Downgraded to 3 bits!
     reg [1:0] cnt; // Counts 0 to 3 (4 shifts)
 
     always @(posedge clk) begin
@@ -35,9 +35,9 @@ module sipo(
             done <= 1'b0; // Default state
             
             if (dv_edge) begin // ONLY shift when the Arduino says so!
-                s0 <= {s0[2:0], in0};
-                s1 <= {s1[2:0], in1};
-                s2 <= {s2[2:0], in2};
+                s0 <= {s0[1:0], in0};
+                s1 <= {s1[1:0], in1};
+                s2 <= {s2[1:0], in2};
                 cnt <= cnt + 1;
                 
                 if (cnt == 2'd3) begin
