@@ -52,19 +52,14 @@ module tt_um_processor_top (
         .instr_out(pipeline_highway) // 12-bit output to the pipeline
     );
 
-    // -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
     // STAGE 2: Execute and Memory 
     // -------------------------------------------------------------------------
     ex_stage_top Stage2_Execute (
         .clk(clk),
         .rst(rst),
         .instr_in(pipeline_highway), // 12-bit input from the pipeline
-        .out_pins(final_acc_value),  // 8-bit output from the Accumulator
-        
-        // We leave the flags disconnected since we just want the Accumulator
-        .status_Z(),
-        .status_N(),
-        .status_C()
+        .out_pins(final_acc_value)   // 8-bit output from the Accumulator
     );
 
     // -------------------------------------------------------------------------
