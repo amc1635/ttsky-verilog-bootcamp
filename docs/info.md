@@ -1,7 +1,7 @@
 
 ## How it works
 
-The design implements a **TinyCrypto-8: An 8-Bit Pipelined ALU with Hardware Cryptography**.It optimizes instruction throughput by overlapping the fetch and execution phases
+The design implements a **TinyCrypto-8: An 8-Bit Pipelined ALU with Hardware Cryptography**. It optimizes instruction throughput by overlapping the fetch and execution phases..It optimizes instruction throughput by overlapping the fetch and execution phases
 ## Inputs
 | Pin  | Name        | Logic Level              | Description |
 |------|------------|--------------------------|-------------|
