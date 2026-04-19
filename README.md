@@ -75,12 +75,3 @@ The top-level module (`tt_um_processor_top`) interfaces directly with the standa
 *(Note: Bidirectional `uio` pins are tied low to act as high-Z inputs to comply with TT multiplexer requirements).*
 
 ---
-
-## 🛠️ Simulation and Testing
-
-*(Add your specific instructions here on how to run your testbenches, e.g., using Verilator, Icarus Verilog, or Cocotb).*
-
-```bash
-# Example:
-iverilog -o processor_tb tt_um_processor_top.v processor_tb.v
-vvp processor_tb
