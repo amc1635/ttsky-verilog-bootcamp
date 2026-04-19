@@ -48,22 +48,23 @@ The design is verified using a comprehensive **testbench** (`tb_Processor_Top`)
 * **Crypto Testing**: The `LOAD_SEED` operation initializes the LFSR, followed by `CRYPTO` operations to verify encrypted data output.
 
 * ## ISA Overview
-* | Category        | Opcode (4-bit) | Mnemonic  | Operation | Description                                           |
-| --------------- | -------------- | --------- | --------- | ----------------------------------------------------- |
-| Arithmetic      | 4'b0000        | ADD       | A + B     | Adds Accumulator and Operand                          |
-|                 | 4'b0001        | SUB       | A − B     | Subtracts Operand from Accumulator                    |
-|                 | 4'b1010        | INC       | A + 1     | Increments Accumulator by 1                           |
-|                 | 4'b1011        | DEC       | A − 1     | Decrements Accumulator by 1                           |
-| Logic           | 4'b0010        | AND       | A & B     | Bitwise AND                                           |
-|                 | 4'b0011        | OR        | A ∥ B     | Bitwise OR                                            |
-|                 | 4'b0110        | XOR       | A ⊕ B     | Bitwise XOR                                           |
-|                 | 4'b0100        | NOT       | ~A        | Bitwise inversion of Accumulator                      |
-| Data/Comparison | 4'b0101        | MOV       | B → A     | Moves operand value into Accumulator                  |
-|                 | 4'b0111        | CMP       | A − B     | Compare: updates flags (Z, N, C) without changing ACC |
-| Shifts          | 4'b1000        | SHL       | A << 1    | Shift left, MSB → Carry                               |
-|                 | 4'b1001        | SHR       | A >> 1    | Shift right, LSB → Carry                              |
-| Cryptography    | 4'b1100        | LOAD_SEED | LFSR = B  | Loads initial 8-bit seed into LFSR engine             |
-|                 | 4'b1101        | CRYPTO    | A ⊕ LFSR  | XOR of Accumulator with LFSR stream                   |
+## ISA Overview
 
+| Category        | Opcode (4-bit) | Mnemonic | Operation | Description |
+|-----------------|----------------|----------|-----------|-------------|
+| Arithmetic      | 4'b0000        | ADD      | A + B     | Adds Accumulator and Operand |
+|                 | 4'b0001        | SUB      | A - B     | Subtracts Operand from Accumulator |
+|                 | 4'b1010        | INC      | A + 1     | Increments Accumulator by 1 |
+|                 | 4'b1011        | DEC      | A - 1     | Decrements Accumulator by 1 |
+| Logic           | 4'b0010        | AND      | A & B     | Bitwise AND |
+|                 | 4'b0011        | OR       | A \| B    | Bitwise OR |
+|                 | 4'b0110        | XOR      | A ⊕ B     | Bitwise XOR |
+|                 | 4'b0100        | NOT      | ~A        | Bitwise inversion of Accumulator |
+| Data/Comparison | 4'b0101        | MOV      | B → A     | Moves operand value into Accumulator |
+|                 | 4'b0111        | CMP      | A - B     | Updates flags without changing ACC |
+| Shifts          | 4'b1000        | SHL      | A << 1    | Shift left, MSB → Carry |
+|                 | 4'b1001        | SHR      | A >> 1    | Shift right, LSB → Carry |
+| Cryptography    | 4'b1100        | LOAD_SEED| LFSR = B  | Loads initial seed into LFSR |
+|                 | 4'b1101        | CRYPTO   | A ⊕ LFSR  | XOR of ACC with LFSR stream |
 
  
