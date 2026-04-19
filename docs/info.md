@@ -3,13 +3,13 @@
 
 ## How it works
 
-The design implements a **2-stage pipelined 8-bit processor**.It optimizes instruction throughput by overlapping the fetch and execution phases[cite: 6, 7].
+The design implements a **2-stage pipelined 8-bit processor**.It optimizes instruction throughput by overlapping the fetch and execution phases
 
 ### Stage 1: Instruction Fetch (IF)
 * **SIPO Interface**: Instructions are received serially through a 3-lane input and converted into a **12-bit parallel instruction** using a Serial-In Parallel-Out (SIPO) register.
-**Program Counter (PC)**: Holds the address of the next instruction and increments by 1 to point to the next entry in memory.
-**Instruction Memory (ROM)**: A **12x8-bit memory** that fetches the 12-bit instruction using the current PC value.
-**Instruction Register (IR)**: Temporarily stores the fetched 12-bit instruction.
+* **Program Counter (PC)**: Holds the address of the next instruction and increments by 1 to point to the next entry in memory.
+* **Instruction Memory (ROM)**: A **12x8-bit memory** that fetches the 12-bit instruction using the current PC value.
+* **Instruction Register (IR)**: Temporarily stores the fetched 12-bit instruction.
 
 ### Stage 2: Execute (EX)
 **IF/EX Pipeline Register**: Marks the boundary between stages.It receives the instruction from the IR and passes it to the execution logic.
