@@ -46,3 +46,19 @@ The design is verified using a comprehensive **testbench** (`tb_Processor_Top`)
 * **SIPO Stimulus**: The 12-bit instruction is fed through serial lanes over multiple clock cycles.
 * **ALU Verification**: Test cases verify arithmetic accuracy and that flags ($Z, N, C$) update correctly.
 * **Crypto Testing**: The `LOAD_SEED` operation initializes the LFSR, followed by `CRYPTO` operations to verify encrypted data output.
+
+  Category,Opcode (4-bit),Mnemonic,Operation,Description
+Arithmetic,4'b0000,ADD,A+B,Adds Accumulator and Operand.
+,4'b0001,SUB,A−B,Subtracts Operand from Accumulator.
+,4'b1010,INC,A+1,Increments Accumulator by 1.
+,4'b1011,DEC,A−1,Decrements Accumulator by 1.
+Logic,4'b0010,AND,A \text{ & } B,Bitwise AND.
+,4'b0011,OR,A∥,Bitwise OR.
+,4'b0110,XOR,A⊕B,Bitwise XOR.
+,4'b0100,NOT,∼A,Bitwise Inversion of Accumulator.
+Data/Comparison,4'b0101,MOV,B,Moves Operand value into Accumulator.
+,4'b0111,CMP,A−B,"Compare: updates flags (Z,N,C) without changing ACC."
+Shifts,4'b1000,SHL,A≪1,"Shift Left: fills with 0, bit 7 moves to Carry flag."
+,4'b1001,SHR,A≫1,"Shift Right: fills with 0, bit 0 moves to Carry flag."
+Cryptography,4'b1100,LOAD_SEED,LFSR=B,Loads an initial 8-bit seed into the LFSR engine.
+,4'b1101,CRYPTO,A⊕LFSR,Bitwise XOR of Accumulator with LFSR pseudo-random stream.
