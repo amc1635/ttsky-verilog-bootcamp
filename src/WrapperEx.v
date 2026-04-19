@@ -5,64 +5,63 @@
 
 `default_nettype none
 
-module WrapperEx (
-    input clk,
-    input reset,
-    input [7:0] instr,   // from pipeline register
-
-    output [7:0] acc_out_final
+module ex_stage_top (
+    input  wire        clk,
+    input  wire        rst,
+    input  wire [11:0] instr_in, 
+    
+    output wire [7:0]  out_pins,
+    
+    // We also expose the flags to the top level just in case 
+    // you want to map them to external LEDs later!
+    output wire        status_Z,
+    output wire        status_N,
+    output wire        status_C
 );
 
-//  Internal wires
-wire [2:0] alu_op;
-wire acc_load;
-wire mem_write;
+    // --- Internal Routing Wires ---
+    wire [3:0] current_opcode;
+    wire [7:0] current_operand;
+    
+    wire [7:0] alu_result_wire;
+    wire       alu_update_wire;
+    
+    wire [7:0] accumulator_wire;
+    wire [7:0] scratchpad_wire; // Internal only, not exposed out of this stage
 
-wire [7:0] operand_out;
-wire [7:0] alu_result;
-wire [7:0] acc_out;
-wire [7:0] mem_data_out;
+    // --- 1. Instantiate Decoder ---
+    ex_decoder u_decoder (
+        .instr_in(instr_in),
+        .opcode(current_opcode),
+        .operand(current_operand)
+    );
 
-// DECODER
-Decoder dec (
-    .instr(instr),
-    .alu_op(alu_op),
-    .acc_load(acc_load),
-    .mem_write(mem_write),
-    .operand_out(operand_out)
-);
+    // --- 2. Instantiate ALU ---
+    Integrated_ALU_8 u_alu (
+        .clk(clk),
+        .reset(rst),
+        .A(accumulator_wire),      // Receives current Acc value
+        .B(current_operand),       // Receives the operand from decoder
+        .alu_op(current_opcode),   // Receives opcode from decoder
+        .result(alu_result_wire),
+        .update_acc(alu_update_wire),
+        .flag_Z(status_Z),
+        .flag_N(status_N),
+        .flag_C(status_C)
+    );
 
-// ALU
-ALU_8 alu (
-    .A(acc_out),
-    .B(operand_out),
-    .alu_op(alu_op),
-    .result(alu_result)
-);
+    // --- 3. Instantiate Registers (Memory) ---
+    ex_memory u_mem (
+        .clk(clk),
+        .rst(rst),
+        .opcode(current_opcode),
+        .alu_result(alu_result_wire),
+        .alu_update_acc(alu_update_wire),
+        .accumulator(accumulator_wire),
+        .scratchpad(scratchpad_wire)
+    );
 
-// ACCUMULATOR
-ACC acc (
-    .clk(clk),
-    .reset(reset),
-    .load(acc_load),
-    .data_in(
-        (alu_op == 3'b110) ? mem_data_out : alu_result
-        // LOAD ? Memory ? ACC
-        // Others ? ALU ? ACC
-    ),
-    .data_out(acc_out)
-);
-
-// DATA MEMORY
-data_memory mem (
-    .clk(clk),
-    .Write_en(mem_write),
-    .Addr(operand_out[2:0]),
-    .Data_in(acc_out),
-    .Data_out(mem_data_out)
-);
-
-// OUTPUT
-assign acc_out_final = acc_out;
+    // --- Output Assignment ---
+    assign out_pins = accumulator_wire;
 
 endmodule
