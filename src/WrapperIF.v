@@ -168,5 +168,7 @@ pipeline_register u_pipe (
 always @(*) begin
     instr_out = pipe_out;
 end
+    // Safely sink the unused write address wire to prevent Verilator warnings
+    wire _unused_if = &{wr_addr};
 endmodule
 
