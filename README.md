@@ -1,5 +1,5 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg)
-# 8-Bit Cryptographic Pipelined Processor
+# 🔒 TinyCrypto-8: An 8-Bit Pipelined ALU with Hardware Cryptography
 - [Read the documentation for project](docs/info.md)
 
 - This repository contains the Verilog RTL for a custom 8-bit, two-stage pipelined processor designed for submission to [Tiny Tapeout](https://tinytapeout.com/). 
