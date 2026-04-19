@@ -1,3 +1,4 @@
+![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg)
 # 🔒 TinyCrypto-8: An 8-Bit Pipelined ALU with Hardware Encyption
 
 **TinyCrypto-8** is a custom, lightweight 8-bit processor designed specifically for the [Tiny Tapeout](https://tinytapeout.com/) ASIC fabrication process. It features a fully custom 2-stage pipelined architecture, an integrated ALU, and a dedicated hardware cryptographic engine (LFSR) optimized for ultra-low area constraints.
