@@ -4,17 +4,7 @@
  */
 
 `default_nettype none
-module fetch_stage(
-input reset,clk,
-output reg [7:0] PC_out);
-always@ (posedge clk)
-begin
-if(reset)
-PC_out <=8'b0;
-else
-PC_out<=PC_out + 1;
-end
-endmodule
+
 
 module pipeline_register(
 input clk,reset,
