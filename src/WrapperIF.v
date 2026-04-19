@@ -31,17 +31,20 @@ endmodule
 
 
 
-module pc(
-input reset,clk,
-output reg [2:0] rd_addr);
-always@ (posedge clk)
-begin
-if(reset)
-rd_addr <=3'b0;
-else
-rd_addr<=rd_addr + 1;
-end
+module pc (
+    input  wire reset,
+    input  wire clk,
+    input  wire re,          // The "Pause Button" (Read Enable)
+    output reg  [2:0] rd_addr
+);
+    always @(posedge clk) begin
+        if (reset)
+            rd_addr <= 3'b000;
+        else if (re)         // ONLY count up if Read Enable is HIGH
+            rd_addr <= rd_addr + 1;
+    end
 endmodule
+
     
 module instruction_register (
     input   clk,
