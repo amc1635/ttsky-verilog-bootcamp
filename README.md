@@ -1,42 +1,77 @@
-![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
-
-# Tiny Tapeout Verilog Project Template
-
+![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg)
+# 🔒 TinyCrypto-8: An 8-Bit Pipelined ALU with Hardware Cryptography
 - [Read the documentation for project](docs/info.md)
 
-## What is Tiny Tapeout?
+- This repository contains the Verilog RTL for a custom 8-bit, two-stage pipelined processor designed for submission to [Tiny Tapeout](https://tinytapeout.com/). 
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
+The processor features a custom 16-instruction ISA, an integrated Arithmetic Logic Unit (ALU), a scratchpad memory system, and a unique hardware-level **LFSR Cryptography Engine** for data encryption and decryption.
 
-To learn more and get started, visit https://tinytapeout.com.
+---
 
-## Set up your Verilog project
+## 🏗️ Architecture Overview
 
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
+The processor is divided into two primary pipeline stages to maximize clock frequency and throughput:
 
-The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
+### 1. Fetch & Pipeline Stage (`top_processor`)
+Instead of utilizing an internal ROM, this design streams instructions directly from the outside world via the Tiny Tapeout input pins. 
+* **Program Counter (PC):** Runs continuously to track execution cycles (available as an internal monitor).
+* **Pipeline Registers:** Buffers the incoming raw instruction to ensure stable delivery to the execution stage on the next clock edge.
 
-## Enable GitHub actions to build the results page
+### 2. Execute & Memory Stage (`ex_stage_top`)
+* **Decoder:** Splits the incoming instruction bus into a 4-bit Opcode and an 8-bit Operand.
+* **Integrated ALU:** Performs arithmetic (ADD, SUB), logical (AND, OR, XOR, NOT), and bitwise operations (SHL, SHR). It updates the main Accumulator and sets condition flags (Zero, Negative, Carry).
+* **Memory & Storage:** Manages the primary 8-bit **Accumulator** and a secondary 8-bit **Scratchpad** register for temporary data storage (`STORE` and `LOAD_MEM` instructions).
 
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
 
-## Resources
+---
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
+## 🔐 LFSR Cryptography Engine
 
-## What next?
+A standout feature of this processor is the integrated 8-bit Linear Feedback Shift Register (LFSR) used for hardware-accelerated stream cipher operations.
 
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+* **Feedback Polynomial:** `x^8 + x^6 + x^5 + x^4 + 1`
+* **`LOAD_SEED` (0xC):** Initializes the LFSR with a user-defined 8-bit seed from the operand.
+* **`CRYPTO` (0xD):** XORs the current Accumulator value with the LFSR state and automatically shifts the LFSR to generate the next pseudo-random byte. This can be used to symmetrically encrypt or decrypt a stream of data bytes.
+
+---
+
+## 📜 Instruction Set Architecture (ISA)
+
+The ALU and Memory controller use a 4-bit Opcode space, yielding 16 distinct operations.
+
+| Opcode (Bin) | Mnemonic    | Description |
+| :--- | :--- | :--- |
+| `0000` | **ADD** | Acc = Acc + Operand |
+| `0001` | **SUB** | Acc = Acc - Operand |
+| `0010` | **AND** | Acc = Acc & Operand |
+| `0011` | **OR** | Acc = Acc \| Operand |
+| `0100` | **NOT** | Acc = ~Acc (Bitwise Invert) |
+| `0101` | **MOV** | Acc = Operand |
+| `0110` | **XOR** | Acc = Acc ^ Operand |
+| `0111` | **CMP** | Sets Z, N, C flags based on (Acc - Operand). Acc is *not* updated. |
+| `1000` | **SHL** | Logical Shift Left. Acc = Acc << 1 |
+| `1001` | **SHR** | Logical Shift Right. Acc = Acc >> 1 |
+| `1010` | **INC** | Acc = Acc + 1 |
+| `1011` | **DEC** | Acc = Acc - 1 |
+| `1100` | **LOAD_SEED**| LFSR Seed = Operand. Acc is *not* updated. |
+| `1101` | **CRYPTO** | Acc = Acc ^ LFSR. Advances LFSR to next state. |
+| `1110` | **STORE** | Scratchpad = Acc |
+| `1111` | **LOAD_MEM** | Acc = Scratchpad |
+
+---
+
+## 🔌 Tiny Tapeout I/O Mapping
+
+The top-level module (`tt_um_processor_top`) interfaces directly with the standard Tiny Tapeout PCB pins.
+
+### Inputs
+* **`ui_in [7:0]`**: Dedicated Instruction Input. Feeds directly into the processor's fetch stage.
+* **`clk`**: System clock.
+* **`rst_n`**: Active-low reset.
+
+### Outputs
+* **`uo_out [7:0]`**: Dedicated Output. Continuously broadcasts the current value of the Accumulator.
+
+*(Note: Bidirectional `uio` pins are tied low to act as high-Z inputs to comply with TT multiplexer requirements).*
+
+

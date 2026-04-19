@@ -27,27 +27,27 @@ project:
     - "SIPO.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
-# This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
+# This section is for the datasheet/website. Use descriptive names.
 pinout:
   # Inputs
-  ui[0]: "input1"
-  ui[1]: "input2"
-  ui[2]: "input3"
-  ui[3]: "input4"
-  ui[4]: "input5"
-  ui[5]: "input6"
+  ui[0]: "MOD (0=Prog, 1=Exec)"
+  ui[1]: "RE (Run PC)"
+  ui[2]: "SIPO_IN0 (Low)"
+  ui[3]: "SIPO_IN1 (Mid)"
+  ui[4]: "SIPO_IN2 (High)"
+  ui[5]: "DATA_VALID (Clock)"
   ui[6]: ""
   ui[7]: ""
 
   # Outputs
-  uo[0]: "output0"
-  uo[1]: "output1"
-  uo[2]: "output2"
-  uo[3]: "output3"
-  uo[4]: "output4"
-  uo[5]: "output5"
-  uo[6]: "output6"
-  uo[7]: "output7"
+  uo[0]: "ACC_Bit0"
+  uo[1]: "ACC_Bit1"
+  uo[2]: "ACC_Bit2"
+  uo[3]: "ACC_Bit3"
+  uo[4]: "ACC_Bit4"
+  uo[5]: "ACC_Bit5"
+  uo[6]: "ACC_Bit6"
+  uo[7]: "ACC_Bit7"
 
   # Bidirectional pins
   uio[0]: ""

@@ -63,5 +63,8 @@ module ex_stage_top (
 
     // --- Output Assignment ---
     assign out_pins = accumulator_wire;
+    // Safely sink the unused scratchpad wire to prevent Verilator warnings
+    wire _unused_ex = &{scratchpad_wire};
 
 endmodule
+
