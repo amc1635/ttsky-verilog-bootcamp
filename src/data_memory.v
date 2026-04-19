@@ -5,26 +5,35 @@
 
 `default_nettype none
 
-module data_memory(
-    input         clk,
-    input         Write_en,
-    input   [2:0] Addr,
-    input   [7:0] Data_in,
-    output  [7:0] Data_out
+module ex_memory (
+    input  wire clk,
+    input  wire rst,
+    input  wire [3:0] opcode,
+    input  wire [7:0] alu_result,
+    input  wire       alu_update_acc,
+    
+    output reg  [7:0] accumulator,
+    output reg  [7:0] scratchpad
 );
 
-    // -------------------------------------------------------------------------
-    // SHRINK RAM TO FIT IN SILICON
-    // 8 mailboxes (0 to 7), each holding an 8-bit number.
-    // -------------------------------------------------------------------------
-    reg [7:0] ram [0:7]; 
+    localparam STORE    = 4'b1110; // Opcode 14
+    localparam LOAD_MEM = 4'b1111; // Opcode 15
 
     always @(posedge clk) begin
-        if (Write_en) begin
-            ram[Addr] <= Data_in; // Sliced to 3 bits
+        if (rst) begin
+            accumulator <= 8'b00000000;
+            scratchpad  <= 8'b00000000;
+        end else begin
+            if (opcode == STORE) begin
+                scratchpad <= accumulator; // Save to Scratchpad
+            end 
+            else if (opcode == LOAD_MEM) begin
+                accumulator <= scratchpad; // Restore from Scratchpad
+            end 
+            else if (alu_update_acc == 1'b1) begin
+                accumulator <= alu_result; // Save standard ALU/Crypto math
+            end
         end
     end
-
-    assign Data_out = ram[Addr];  // Sliced to 3 bits
 
 endmodule
