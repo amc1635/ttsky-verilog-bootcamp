@@ -74,4 +74,4 @@ The top-level module (`tt_um_processor_top`) interfaces directly with the standa
 
 *(Note: Bidirectional `uio` pins are tied low to act as high-Z inputs to comply with TT multiplexer requirements).*
 
----
+
