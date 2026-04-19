@@ -1,7 +1,7 @@
 
 ## How it works
 
-The design implements a **2-stage pipelined 8-bit processor**.It optimizes instruction throughput by overlapping the fetch and execution phases
+The design implements a **TinyCrypto-8: An 8-Bit Pipelined ALU with Hardware Cryptography**.It optimizes instruction throughput by overlapping the fetch and execution phases
 
 ### Stage 1: Instruction Fetch (IF)
 * **SIPO Interface**: Instructions are received serially through a 3-lane input and converted into a **12-bit parallel instruction** using a Serial-In Parallel-Out (SIPO) register.
