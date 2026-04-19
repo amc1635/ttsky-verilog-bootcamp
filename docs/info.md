@@ -12,13 +12,14 @@ The design implements a **2-stage pipelined 8-bit processor**.It optimizes instr
 * **Instruction Register (IR)**: Temporarily stores the fetched 12-bit instruction.
 
 ### Stage 2: Execute (EX)
-**IF/EX Pipeline Register**: Marks the boundary between stages.It receives the instruction from the IR and passes it to the execution logic.
-**Decoder**: Interprets the 12-bit instruction by decoding the opcode to generate control signals for the ALU and memory.
+* **IF/EX Pipeline Register**: Marks the boundary between stages.It receives the instruction from the IR and passes it to the execution logic.
+* **Decoder**: Interprets the 12-bit instruction by decoding the opcode to generate control signals for the ALU and memory.
 * **Integrated ALU (8-bit)**: Performs arithmetic, logical, and cryptographic operations. It includes:
-    ]**Arithmetic/Logic**: ADD, SUB, AND, OR, XOR, NOT, INC, and DEC.
+    * **Arithmetic/Logic**: ADD, SUB, AND, OR, XOR, NOT, INC, and DEC.
     * **Shift Operations**: SHL (Shift Left) and SHR (Shift Right) for bit manipulation.
     * **Flag Logic**: Updates Zero ($Z$), Negative ($N$), and Carry ($C$) flags based on the operation result.
-    * **LFSR Crypto Engine**: A Linear Feedback Shift Register used for stream encryption/decryption (XORing data with a pseudo-random seed).**Accumulator (ACC)**: An 8-bit register that stores intermediate or final results
+    * **LFSR Crypto Engine**: A Linear Feedback Shift Register used for stream encryption/decryption (XORing data with a pseudo-random seed).
+    * **Accumulator (ACC)**: An 8-bit register that stores intermediate or final results
 **Data Memory (RAM)**: A memory module used for **LOAD** and **STORE** operations
 
 
