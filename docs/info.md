@@ -19,8 +19,8 @@ The design implements a **2-stage pipelined 8-bit processor**.It optimizes instr
     * **Shift Operations**: SHL (Shift Left) and SHR (Shift Right) for bit manipulation.
     * **Flag Logic**: Updates Zero ($Z$), Negative ($N$), and Carry ($C$) flags based on the operation result.
     * **LFSR Crypto Engine**: A Linear Feedback Shift Register used for stream encryption/decryption (XORing data with a pseudo-random seed).
-    * **Accumulator (ACC)**: An 8-bit register that stores intermediate or final results
-**Data Memory (RAM)**: A memory module used for **LOAD** and **STORE** operations
+    * **Accumulator (ACC)**: An 8-bit register that stores intermediate or final results.
+* **Data Memory (RAM)**: A memory module used for **LOAD** and **STORE** operations.
 
 
 
@@ -30,7 +30,7 @@ The design implements a **2-stage pipelined 8-bit processor**.It optimizes instr
 
 * **Instruction Width**: 12 bits.
 **Data Width**: 8 bits
-]**Pipeline Stages**: 2 (Fetch, Execute)
+* **Pipeline Stages**: 2 (Fetch, Execute)
 * **Cryptographic Engine**: 8-bit LFSR with polynomial $x^8 + x^6 + x^5 + x^4 + 1$.
 * **Status Flags**: 
     * **Zero (Z)**: Set if result is `0`.
